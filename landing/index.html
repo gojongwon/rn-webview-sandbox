@@ -11,6 +11,7 @@
         --muted: #9ca3af;
         --card: #16161c;
         --accent: #ffffff;
+        --warn: #fbbf24;
       }
 
       * {
@@ -77,10 +78,23 @@
         color: #e5e7eb;
         font-size: 0.9rem;
         line-height: 1.45;
+        text-align: left;
       }
 
       .req strong {
         color: #fff;
+      }
+
+      .warn {
+        margin: 0 0 16px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #2a2110;
+        border: 1px solid #5c4a1f;
+        color: #fde68a;
+        font-size: 0.85rem;
+        line-height: 1.45;
+        text-align: left;
       }
 
       .stores {
@@ -130,20 +144,34 @@
       <p class="lead">QR을 스캔하면 Expo Go에서 웹뷰 테스트 앱이 열립니다.</p>
 
       <p class="req">
-        <strong>필수:</strong> 스마트폰에 Expo Go가 설치되어 있어야 합니다.
-        Expo SDK 54와 맞는 최신 Expo Go를 사용해 주세요.
+        <strong>필수:</strong> 스마트폰에 <strong>Expo Go (SDK 56)</strong>가
+        설치되어 있어야 합니다. 스토어 앱이 오래됐거나 버전이 다르면
+        “Something went wrong”이 납니다.
+      </p>
+
+      <p class="warn">
+        Something went wrong가 보이면 → Expo Go를 최신으로 업데이트하거나,
+        아래 SDK 56 설치 링크에서 맞는 버전을 다시 설치한 뒤 QR을 다시
+        스캔하세요.
       </p>
 
       <div class="stores">
         <a
           class="btn"
+          href="https://expo.dev/go?sdkVersion=56"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Expo Go SDK 56 설치</a
+        >
+        <a
+          class="btn secondary"
           href="https://apps.apple.com/app/expo-go/id982107779"
           target="_blank"
           rel="noopener noreferrer"
           >App Store</a
         >
         <a
-          class="btn"
+          class="btn secondary"
           href="https://play.google.com/store/apps/details?id=host.exp.exponent"
           target="_blank"
           rel="noopener noreferrer"
@@ -153,17 +181,17 @@
 
       <div class="qr-wrap">
         <img
-          src="https://qr.expo.dev/eas-update?projectId=4eaf7758-b15c-4e58-bd65-17a94c5476e2&runtimeVersion=exposdk:54.0.0&channel=preview"
+          src="https://qr.expo.dev/eas-update?projectId=4eaf7758-b15c-4e58-bd65-17a94c5476e2&runtimeVersion=exposdk:56.0.0&channel=preview"
           alt="Expo Go QR code"
           width="260"
           height="260"
         />
       </div>
 
-      <p class="hint">카메라 또는 Expo Go로 QR을 스캔하세요.</p>
+      <p class="hint">가능하면 Expo Go 앱 안의 “Scan QR code”로 스캔하세요.</p>
       <a
         class="open-link"
-        href="exp://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2?runtime-version=exposdk%3A54.0.0&channel-name=preview"
+        href="https://expo.dev/go?url=exp%3A%2F%2Fu.expo.dev%2F4eaf7758-b15c-4e58-bd65-17a94c5476e2%3Fruntime-version%3Dexposdk%253A56.0.0%26channel-name%3Dpreview"
         >스캔이 안 되면 이 링크를 탭하세요</a
       >
     </main>
