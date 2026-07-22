@@ -20,6 +20,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4eaf7758-b15c-4e58-bd65-17a94c5476e2"
+      }
+    },
+    "owner": "gojongwon1122",
+    "runtimeVersion": "exposdk:54.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2"
     }
   }
 }
