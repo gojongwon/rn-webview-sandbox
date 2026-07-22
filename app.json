@@ -27,7 +27,9 @@
       }
     },
     "owner": "gojongwon1122",
-    "runtimeVersion": "exposdk:56.0.0",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "updates": {
       "url": "https://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2"
     },

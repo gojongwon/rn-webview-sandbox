@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
-    "expo": "^56.0.0",
-    "expo-status-bar": "~56.0.4",
-    "expo-updates": "~56.0.22",
+    "expo": "^57.0.0",
+    "expo-status-bar": "~57.0.1",
+    "expo-updates": "~57.0.8",
     "react": "19.2.3",
-    "react-native": "0.85.3",
+    "react-native": "0.86.0",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-webview": "13.16.1"
   },
