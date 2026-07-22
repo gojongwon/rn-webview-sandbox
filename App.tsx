@@ -13,7 +13,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-const START_URL = 'https://example.com';
+const START_URL = 'https://exampleurl.com';
 
 const PRESETS = [
   {
