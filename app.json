@@ -10,6 +10,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.deepmedi.rnwebviewsandbox",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -27,7 +28,7 @@
       }
     },
     "owner": "gojongwon1122",
-    "runtimeVersion": "exposdk:56.0.0",
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2"
     },

@@ -1,28 +1,34 @@
 # rn-webview-sandbox
 
-Expo Go에서 URL을 열어 네이티브 WebView 동작을 확인하는 샌드박스입니다.
+Android 프리뷰 APK로 URL을 열어 네이티브 WebView 동작을 확인하는 샌드박스입니다. Expo Go는 필요 없습니다.
 
 ## 테스터
 
-1. 스마트폰에 [Expo Go SDK 56](https://expo.dev/go?sdkVersion=56) 설치
-2. 랜딩 페이지를 열고 QR 스캔  
+1. Android 폰에서 랜딩 페이지 열기  
    → https://gojongwon.github.io/rn-webview-sandbox/
+2. QR을 스캔해 APK 설치 (처음 한 번)
+3. 앱 실행 → 웹뷰 테스트 화면
 
-Something went wrong가 뜨면 Expo Go 버전이 프로젝트(SDK 56)와 다른 경우입니다. 위 링크로 SDK 56용 Expo Go를 설치한 뒤 다시 시도하세요.
+이미 설치했다면 앱만 다시 실행하면 `preview` 채널의 최신 JS를 받습니다.  
+“알 수 없는 앱 설치” 허용이 필요할 수 있습니다.
 
-## 배포자 (앱 내용 갱신)
+## 배포자
 
-코드 수정 후 preview 채널에 올립니다. 랜딩 URL·QR은 그대로입니다.
+### JS만 변경했을 때
 
 ```bash
 npm run publish:preview
 ```
 
-최초/수동 EAS 배포:
+APK 재빌드 없이 반영됩니다. (앱을 한 번 종료 후 다시 실행)
+
+### 네이티브/의존성 변경 시
 
 ```bash
-npx eas update --branch preview --message "설명"
+npm run build:preview:android
 ```
+
+빌드가 끝나면 랜딩의 설치 URL을 새 빌드 링크로 갱신하세요.
 
 ## 로컬 개발
 

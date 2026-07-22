@@ -20,7 +20,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "publish:preview": "eas update --branch preview --environment preview --message \"webview sandbox preview\""
+    "publish:preview": "eas update --branch preview --environment preview --message \"webview sandbox preview\"",
+    "build:preview:android": "eas build --platform android --profile preview"
   },
+
   "private": true
 }
