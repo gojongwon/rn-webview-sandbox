@@ -5,7 +5,8 @@
   },
   "build": {
     "preview": {
-      "channel": "preview"
+      "channel": "preview",
+      "distribution": "internal"
     },
     "production": {
       "channel": "production"

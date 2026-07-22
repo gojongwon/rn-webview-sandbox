@@ -1,0 +1,44 @@
+# 수동 트리거로 EAS에서 APK를 빌드하고 GitHub Release에 자동 첨부
+# 필요 설정: 저장소 Settings → Secrets → Actions에 EXPO_TOKEN 추가
+# (토큰 발급: https://expo.dev/settings/access-tokens)
+name: Build APK and release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build APK on EAS
+        run: eas build --platform android --profile preview --non-interactive --wait
+
+      - name: Download APK artifact
+        run: |
+          BUILD_URL=$(eas build:list --platform=android --status=finished --limit=1 --json --non-interactive | jq -r '.[0].artifacts.buildUrl')
+          curl -fL "$BUILD_URL" -o rn-webview-sandbox.apk
+
+      - name: Create GitHub release with APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-${{ github.run_number }}
+          name: APK build ${{ github.run_number }}
+          files: rn-webview-sandbox.apk
