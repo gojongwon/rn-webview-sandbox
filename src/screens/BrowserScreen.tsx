@@ -30,6 +30,7 @@ import {
 import { BridgeLogPanel, ErrorView } from '../components';
 import { APP_VERSION, BRIDGE_VERSION, CUSTOM_UA_SUFFIX } from '../config';
 import { downloadAndShare, isDownloadUrl, saveBase64AndShare } from '../download';
+import { openIntentUrl } from '../intent';
 import { Settings } from '../settings';
 import { ui } from '../theme';
 
@@ -127,6 +128,23 @@ export function BrowserScreen({
       }
       if (req.url === 'about:blank' || req.url.startsWith('blob:') || req.url.startsWith('data:')) {
         return true; // blob/data 내비게이션은 주입 스크립트가 클릭 단계에서 처리
+      }
+      // intent:// (Android PG 결제 등): 앱 스킴 → fallback URL → 마켓 순서로 처리
+      if (req.url.startsWith('intent:')) {
+        pushLog({
+          dir: 'web→app',
+          type: 'intent',
+          at: Date.now(),
+          preview: req.url.slice(0, 120),
+        });
+        openIntentUrl(req.url).then((fallback) => {
+          if (fallback) {
+            webRef.current?.injectJavaScript(
+              `window.location.href=${JSON.stringify(fallback)};true;`
+            );
+          }
+        });
+        return false;
       }
       Linking.openURL(req.url).catch(() => {});
       return false;
