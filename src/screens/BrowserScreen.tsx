@@ -1,3 +1,4 @@
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -33,6 +34,7 @@ import { Settings } from '../settings';
 import { ui } from '../theme';
 
 const MAX_LOGS = 50;
+const KEEP_AWAKE_TAG = 'webview-sandbox';
 
 export function BrowserScreen({
   initialUri,
@@ -49,6 +51,8 @@ export function BrowserScreen({
   const [httpError, setHttpError] = useState<string | null>(null);
   const [logs, setLogs] = useState<BridgeLogEntry[]>([]);
   const [showLogs, setShowLogs] = useState(false);
+  // 브릿지(screen.keepAwake)가 지정하면 설정보다 우선 (null = 미지정)
+  const [webKeepAwake, setWebKeepAwake] = useState<boolean | null>(null);
 
   const pushLog = useCallback((entry: BridgeLogEntry) => {
     setLogs((prev) => [...prev.slice(-(MAX_LOGS - 1)), entry]);
@@ -65,6 +69,19 @@ export function BrowserScreen({
       ]).catch(() => {});
     }
   }, []);
+
+  // [설정+브릿지] 화면 꺼짐 방지
+  useEffect(() => {
+    const on = webKeepAwake ?? settings.keepAwake;
+    if (on) {
+      activateKeepAwakeAsync(KEEP_AWAKE_TAG).catch(() => {});
+    } else {
+      deactivateKeepAwake(KEEP_AWAKE_TAG).catch(() => {});
+    }
+    return () => {
+      deactivateKeepAwake(KEEP_AWAKE_TAG).catch(() => {});
+    };
+  }, [webKeepAwake, settings.keepAwake]);
 
   // [기본] Android 하드웨어 백버튼: 웹 히스토리 back → 없으면 런처로
   useEffect(() => {
@@ -205,6 +222,14 @@ export function BrowserScreen({
         }
         case 'log':
           break; // 로그 패널에만 기록
+        case 'screen.keepAwake': {
+          const on = !!(msg.payload as { on?: boolean } | undefined)?.on;
+          setWebKeepAwake(on);
+          if (msg.id) {
+            reply({ v: BRIDGE_VERSION, id: msg.id, type: 'screen.keepAwake', payload: { ok: true, on } });
+          }
+          break;
+        }
         case 'download.blob': {
           const p = (msg.payload ?? {}) as {
             name?: string;

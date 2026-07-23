@@ -68,6 +68,12 @@ export function SettingsScreen({
           value={settings.incognito}
           onChange={(v) => set('incognito', v)}
         />
+        <SwitchRow
+          label="화면 꺼짐 방지"
+          sub="측정 등 장시간 화면 유지 (웹에서 screen.keepAwake로 제어 가능)"
+          value={settings.keepAwake}
+          onChange={(v) => set('keepAwake', v)}
+        />
 
         <Text style={ui.section}>iOS</Text>
 

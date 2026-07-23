@@ -7,6 +7,7 @@ export type Settings = {
   popupMode: PopupMode; //     window.open / target=_blank 처리
   bottomSafeArea: boolean; //  하단 safe area를 앱이 처리 (off = 웹이 처리)
   incognito: boolean; //       쿠키/스토리지 미보존
+  keepAwake: boolean; //       화면 꺼짐 방지 (웹에서 screen.keepAwake로도 제어 가능)
   // iOS
   cameraAutoGrant: boolean; // getUserMedia 권한 자동 승인 vs 웹뷰가 묻기
   swipeBack: boolean; //       스와이프 백 제스처
@@ -21,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   popupMode: 'same',
   bottomSafeArea: false,
   incognito: false,
+  keepAwake: false,
   cameraAutoGrant: true,
   swipeBack: true,
   pullToRefresh: false,
