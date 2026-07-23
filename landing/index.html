@@ -129,6 +129,34 @@
         line-height: 1.45;
       }
 
+      .qr-tabs {
+        display: flex;
+        gap: 3px;
+        padding: 3px;
+        margin-bottom: 16px;
+        background: #1c1c24;
+        border: 1px solid #2a2a33;
+        border-radius: 10px;
+      }
+
+      .qr-tab {
+        flex: 1;
+        padding: 8px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .qr-tab.active {
+        background: #fff;
+        color: var(--bg);
+      }
+
       .open-link {
         display: inline-block;
         margin-top: 14px;
@@ -154,6 +182,11 @@
           rel="noopener noreferrer"
           >Android 앱 설치 (APK)</a
         >
+        <a
+          class="btn secondary"
+          href="exp://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2?runtime-version=exposdk%3A57.0.0&amp;channel-name=preview"
+          >iOS로 열기 (Expo Go)</a
+        >
       </div>
 
       <p class="req">
@@ -161,17 +194,54 @@
         “출처를 알 수 없는 앱” 허용이 필요할 수 있습니다.
       </p>
 
-      <p class="warn">
-        <strong>iOS:</strong> 준비 중입니다. 참여를 원하시면 배포자에게
-        문의해주세요.
+      <p class="req">
+        <strong>iOS:</strong> ① App Store에서 <strong>Expo Go</strong>를
+        설치하세요. ② 아이폰에서 이 페이지를 열었다면 위 “iOS로 열기” 버튼을,
+        컴퓨터로 보고 있다면 아래 <strong>iOS QR</strong>을 폰 카메라로
+        스캔하세요. 앱이 안 열리면 Expo Go에 프로젝트 접근 권한이 있는 계정으로
+        로그인해주세요.
       </p>
 
       <div class="qr-wrap">
-        <img src="qr.svg" alt="설치 페이지 QR" width="220" height="220" />
+        <div class="qr-tabs" role="tablist">
+          <button class="qr-tab active" type="button" data-qr="page">
+            설치 페이지
+          </button>
+          <button class="qr-tab" type="button" data-qr="ios">
+            iOS (Expo Go)
+          </button>
+        </div>
+        <img id="qr-img" src="qr.svg" alt="설치 페이지 QR" width="220" height="220" />
+        <p class="hint" id="qr-caption" style="margin-top: 12px">
+          이 설치 페이지 열기 (Android는 여기서 APK 설치)
+        </p>
       </div>
-      <p class="hint">
-        컴퓨터로 보고 계신가요? 폰 카메라로 QR을 찍으면 이 페이지가 열립니다.
-      </p>
+
+      <script>
+        var QRS = {
+          page: {
+            src: "qr.svg",
+            alt: "설치 페이지 QR",
+            caption: "이 설치 페이지 열기 (Android는 여기서 APK 설치)",
+          },
+          ios: {
+            src: "https://qr.expo.dev/eas-update?projectId=4eaf7758-b15c-4e58-bd65-17a94c5476e2&runtimeVersion=exposdk%3A57.0.0&channel=preview",
+            alt: "iOS Expo Go QR",
+            caption: "iOS: 폰 카메라로 스캔하면 Expo Go에서 테스트 앱이 열립니다",
+          },
+        };
+        document.querySelectorAll(".qr-tab").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var qr = QRS[btn.dataset.qr];
+            document.getElementById("qr-img").src = qr.src;
+            document.getElementById("qr-img").alt = qr.alt;
+            document.getElementById("qr-caption").textContent = qr.caption;
+            document.querySelectorAll(".qr-tab").forEach(function (b) {
+              b.classList.toggle("active", b === btn);
+            });
+          });
+        });
+      </script>
     </main>
   </body>
 </html>
