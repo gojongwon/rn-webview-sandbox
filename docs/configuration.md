@@ -2,7 +2,24 @@
 
 설정을 세 층으로 나눈다. 기준: **끌 이유가 없는 것 = 기본 내장, 웹 동작을 비교 테스트할 것 = 설정 화면, 런타임에 못 바꾸는 것 = 빌드 타임.**
 
-## 1. 기본 내장 (항상 켜짐, App.tsx `Browser` 컴포넌트)
+## 파일 구조
+
+```
+App.tsx                        # 라우팅만 (런처/설정/브라우저 전환)
+src/
+  config.ts                    # 상수 (URL 프리셋, UA 접미사, 버전)
+  settings.ts                  # Settings 타입 + 기본값
+  theme.ts                     # 공용 스타일
+  bridge.ts                    # 브릿지 규격 + 주입 스크립트 (docs/bridge.md)
+  download.ts                  # 파일 저장/공유 (expo-file-system, expo-sharing)
+  components.tsx               # SwitchRow, SegmentRow, ErrorView, BridgeLogPanel
+  screens/
+    LauncherScreen.tsx
+    SettingsScreen.tsx
+    BrowserScreen.tsx          # 웹뷰 본체 + 브릿지 핸들러
+```
+
+## 1. 기본 내장 (항상 켜짐, `src/screens/BrowserScreen.tsx`)
 
 | 항목 | 코드 | 비고 |
 |---|---|---|
@@ -16,7 +33,10 @@
 | 외부 스킴 | `onShouldStartLoadWithRequest` → `Linking.openURL` | `tel:`, `mailto:`, `kakaotalk:` 등. **한계: Android `intent://`는 Linking으로 안 열림** (필요 시 intent URL 파싱 추가) |
 | HTTP 에러 배너 | `onHttpError` (메인 문서 URL만 필터) | 탭하면 닫힘 |
 | 로드 실패 화면 | `renderError` + 다시 시도 버튼 | 오프라인/DNS 실패 등 |
-| 툴바 | 닫기 / 현재 호스트 / 초기화(clearCache+reload) / 새로고침 | iOS는 백버튼이 없어서 닫기 필수 |
+| 플로팅 백 버튼 | 좌상단 반투명 ← | iOS는 백버튼이 없어서 런처 복귀용 |
+| 브릿지 | `injectedJavaScriptBeforeContentLoaded` + `onMessage` | `window.AppBridge` 주입. 규격은 docs/bridge.md |
+| 파일 다운로드 | blob/data 클릭 인터셉트, 직링크 다운로드, iOS `onFileDownload` | 저장 후 OS 공유 시트. 상세는 docs/bridge.md |
+| 브릿지 로그 | 우하단 "브릿지 N" 버튼 → 로그 패널 | 웹↔앱 메시지 실시간 확인 |
 
 ## 2. 설정 페이지 (런처 우측 상단 "설정" 버튼, 세션 단위 — 앱 재시작하면 초기화됨)
 
@@ -59,6 +79,7 @@
 | iOS 외부 앱 스킴 조회 | `ios.infoPlist.LSApplicationQueriesSchemes` — 카카오/네이버 등 앱 전환용 |
 | Android 권한 | `android.permissions` — CAMERA, RECORD_AUDIO, MODIFY_AUDIO_SETTINGS |
 | 키보드 리사이즈 | Android `windowSoftInputMode` (Expo 기본 `adjustResize`) |
+| 네이티브 모듈 | `expo-file-system`, `expo-sharing` — 추가/변경 시 재빌드 필요 (EAS Update 불가) |
 
 ## 설정을 늘릴 때
 

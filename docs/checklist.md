@@ -33,13 +33,15 @@
 - [ ] ⬜ Android `intent://` URL 파싱 (Linking으로는 안 열림 — PG 결제 필요 시 구현)
 - [ ] ⬜ 구글 OAuth: 웹뷰 UA 차단(`disallowed_useragent`) → 외부 브라우저/ASWebAuthenticationSession 우회
 
-## 파일 다운로드
+## 파일 다운로드 (docs/bridge.md 참고)
 
-- [ ] ⬜ blob 다운로드: 웹뷰에서 기본 동작 안 함 → JS로 base64 변환 후 postMessage 브릿지
-- [ ] ⬜ iOS(WKWebView): 다운로드 수동 처리 → 저장 후 공유 시트/QuickLook
-- [ ] ⬜ Android: `DownloadManager` 연동 (react-native-webview 기본 다운로드는 제한적)
-- [ ] ⬜ PDF: iOS는 인라인 표시됨(저장은 별도), Android는 표시 자체가 안 됨 → 뷰어/다운로드 처리
-- [ ] ⬜ `Content-Disposition: attachment` 응답 처리
+- [x] ✅ blob/data 다운로드: 주입 스크립트가 `<a download>` 클릭 인터셉트 → base64 → 저장/공유
+- [x] ✅ 웹 주도 다운로드: `AppBridge.saveFile(name, mime, base64)` — 인증 파일은 이 방식 권장
+- [x] ✅ https 직링크(xlsx/csv/docx/pptx/zip/hwp): 네이티브 다운로드(expo-file-system) → 공유 시트
+- [x] ✅ PDF: Android는 다운로드, iOS는 인라인 렌더링
+- [x] ✅ iOS `Content-Disposition: attachment`: `onFileDownload` → 다운로드 → 공유 시트
+- [ ] ⬜ Android `Content-Disposition` 감지 (확장자 없는 URL은 못 잡음 — 웹에서 saveFile 사용으로 우회)
+- [ ] ⬜ 네이티브 직다운로드에 세션 쿠키 첨부 (현재 미지원 — 인증 파일은 saveFile 경유)
 
 ## 파일 업로드
 
@@ -48,10 +50,12 @@
 - [ ] ⬜ 엑셀 MIME(`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`)이 Android 파일 피커에서 필터링되는지 확인
 - [ ] ⬜ `accept="image/*"` + `capture` 속성 동작 확인
 
-## 브릿지 (postMessage)
+## 브릿지 (postMessage) — docs/bridge.md 참고
 
-- [ ] ⬜ `onMessage` ↔ `window.ReactNativeWebView.postMessage` 프로토콜(타입/버전) 정의
-- [ ] ⬜ 토큰·앱 정보 주입: `injectedJavaScriptBeforeContentLoaded`
+- [x] ✅ 프로토콜 v1: `{ v, type, id?, payload }` + `window.AppBridge` (send/request/on/saveFile)
+- [x] ✅ 앱 정보 제공: `AppBridge.request('app.info')`
+- [x] ✅ 브릿지 로그 패널 (브라우저 우하단 버튼)
+- [ ] ⬜ 토큰 주입 (필요 시 `app.info` payload 확장 또는 전용 타입 추가)
 - [x] ⚙️ 웹의 앱 감지용 커스텀 UA (`applicationNameForUserAgent`)
 
 ## 에러 / 복구
