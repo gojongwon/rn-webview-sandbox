@@ -101,7 +101,7 @@ https://qr.expo.dev/eas-update?projectId=4eaf7758-b15c-4e58-bd65-17a94c5476e2&ru
 동작 원리: runtimeVersion 정책이 플랫폼별로 분리되어 있다 — Android는 `fingerprint`(APK 빌드와 정확 매칭), **iOS는 `sdkVersion`**(`exposdk:57.0.0` → Expo Go가 로드 가능). 주의:
 
 - Expo Go는 최신 SDK만 지원하므로 SDK 업그레이드 시 Expo Go도 업데이트 필요
-- 비공개 프로젝트면 Expo Go에 프로젝트 접근 권한이 있는 계정으로 로그인 필요할 수 있음
+- Expo Go는 무료 Expo 계정 로그인 필요 (아무 계정이나 가능 — 프로젝트 권한 불필요). 업데이트 자체는 URL만 알면 누구나 로드 가능하므로 번들에 시크릿을 넣지 말 것
 - Info.plist 기반 기능(카카오 스킴, 권한 문구)은 Expo Go에서 테스트 불가
 - 나중에 실제 iOS 빌드(TestFlight)를 시작하면 `ios.runtimeVersion`도 `fingerprint`로 되돌리는 게 안전
 
