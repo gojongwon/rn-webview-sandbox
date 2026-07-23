@@ -4,14 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>웹뷰 테스트 앱 설치</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
     <style>
       :root {
-        --bg: #0b0b0f;
-        --fg: #f5f5f7;
-        --muted: #9ca3af;
-        --card: #16161c;
-        --accent: #ffffff;
-        --warn: #fbbf24;
+        --bg: #ffffff;
+        --fg: #0b0b0f;
+        --muted: #6b7280;
+        --subtle: #9ca3af;
+        --card: #f9fafb;
+        --border: #eef0f3;
+        --border-strong: #e5e7eb;
+        --green: #10b981;
+        --blue: #3b82f6;
       }
 
       * {
@@ -21,121 +28,145 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui,
-          sans-serif;
-        background:
-          radial-gradient(1200px 600px at 50% -10%, #2a2a38 0%, transparent 55%),
-          var(--bg);
+        font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+          "Noto Sans KR", system-ui, sans-serif;
+        background: var(--bg);
         color: var(--fg);
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 24px;
+        padding: 32px 24px;
       }
 
       main {
-        width: min(420px, 100%);
-        text-align: center;
+        width: min(860px, 100%);
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .intro {
+        grid-column: 1 / -1;
+        margin-bottom: 4px;
       }
 
       h1 {
-        margin: 0 0 8px;
-        font-size: 1.75rem;
+        margin: 0 0 6px;
+        font-size: 1.9rem;
         letter-spacing: -0.03em;
         font-weight: 700;
       }
 
       .lead {
-        margin: 0 0 28px;
+        margin: 0;
         color: var(--muted);
         font-size: 0.95rem;
-        line-height: 1.5;
+        line-height: 1.55;
       }
 
-      .qr-wrap {
+      .col-left {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .card {
         background: var(--card);
-        border: 1px solid #2a2a33;
-        border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-
-      .qr-wrap img {
-        width: min(260px, 100%);
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        background: #fff;
-        border-radius: 12px;
-      }
-
-      .req {
-        margin: 0 0 16px;
-        padding: 14px 16px;
+        border: 1px solid var(--border);
         border-radius: 14px;
-        background: #1c1c24;
-        border: 1px solid #333344;
-        color: #e5e7eb;
-        font-size: 0.9rem;
-        line-height: 1.45;
-        text-align: left;
+        padding: 18px;
       }
 
-      .req strong {
-        color: #fff;
+      .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
       }
 
-      .warn {
-        margin: 0 0 16px;
-        padding: 14px 16px;
-        border-radius: 14px;
-        background: #2a2110;
-        border: 1px solid #5c4a1f;
-        color: #fde68a;
-        font-size: 0.85rem;
-        line-height: 1.45;
-        text-align: left;
+      .badge.android {
+        color: var(--green);
+        background: rgba(16, 185, 129, 0.13);
       }
 
-      .stores {
+      .badge.ios {
+        color: var(--blue);
+        background: rgba(59, 130, 246, 0.13);
+      }
+
+      ol.steps {
+        margin: 0 0 14px;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      ol.steps li {
+        counter-increment: step;
         display: flex;
         gap: 10px;
+        align-items: baseline;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #374151;
+      }
+
+      ol.steps li::before {
+        content: counter(step);
+        flex: 0 0 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #eef0f3;
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 18px;
+        transform: translateY(3px);
       }
 
       a.btn {
-        display: inline-block;
-        padding: 10px 14px;
+        display: block;
+        text-align: center;
+        padding: 12px 16px;
         border-radius: 12px;
         text-decoration: none;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         font-weight: 600;
-        color: var(--bg);
-        background: var(--accent);
+        color: #ffffff;
+        background: var(--fg);
+      }
+
+      a.btn:active {
+        opacity: 0.85;
       }
 
       a.btn.secondary {
-        background: transparent;
+        background: #ffffff;
         color: var(--fg);
-        border: 1px solid #3f3f4a;
+        border: 1px solid var(--border-strong);
       }
 
-      .hint {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.8rem;
-        line-height: 1.45;
+      .qr-card {
+        text-align: center;
+        position: sticky;
+        top: 32px;
       }
 
       .qr-tabs {
         display: flex;
         gap: 3px;
         padding: 3px;
-        margin-bottom: 16px;
-        background: #1c1c24;
-        border: 1px solid #2a2a33;
+        margin-bottom: 14px;
+        background: #eef0f3;
         border-radius: 10px;
       }
 
@@ -147,62 +178,98 @@
         background: transparent;
         color: var(--muted);
         font: inherit;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         font-weight: 600;
         cursor: pointer;
       }
 
       .qr-tab.active {
-        background: #fff;
-        color: var(--bg);
+        background: #ffffff;
+        color: var(--fg);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
       }
 
-      .open-link {
-        display: inline-block;
-        margin-top: 14px;
-        color: #93c5fd;
-        font-size: 0.875rem;
-        word-break: break-all;
+      .qr-card img {
+        width: min(240px, 100%);
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .hint {
+        margin: 12px 0 0;
+        color: var(--subtle);
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+
+      .note {
+        grid-column: 1 / -1;
+        margin: 0;
+        color: var(--subtle);
+        font-size: 0.78rem;
+        text-align: center;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .qr-card {
+          position: static;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>웹뷰 테스트</h1>
-      <p class="lead">
-        아래 버튼으로 테스트 앱을 설치하세요. 설치는 한 번만 하면 되고, 이후
-        내용은 자동으로 갱신됩니다.
-      </p>
+      <header class="intro">
+        <h1>웹뷰 테스트</h1>
+        <p class="lead">
+          테스트 앱 설치는 한 번이면 됩니다. 이후 내용은 자동으로 갱신돼요.
+        </p>
+      </header>
 
-      <div class="stores">
-        <a
-          class="btn"
-          href="https://github.com/gojongwon/rn-webview-sandbox/releases/latest/download/rn-webview-sandbox.apk"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Android 앱 설치 (APK)</a
-        >
-        <a
-          class="btn secondary"
-          href="exp://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2?runtime-version=exposdk%3A57.0.0&amp;channel-name=preview"
-          >iOS로 열기 (Expo Go)</a
-        >
+      <div class="col-left">
+        <section class="card">
+          <span class="badge android">ANDROID</span>
+          <ol class="steps">
+            <li>아래 버튼으로 APK를 다운로드하세요.</li>
+            <li>“출처를 알 수 없는 앱” 허용 후 설치하면 끝.</li>
+          </ol>
+          <a
+            class="btn"
+            href="https://github.com/gojongwon/rn-webview-sandbox/releases/latest/download/rn-webview-sandbox.apk"
+            target="_blank"
+            rel="noopener noreferrer"
+            >APK 다운로드</a
+          >
+        </section>
+
+        <section class="card">
+          <span class="badge ios">IOS</span>
+          <ol class="steps">
+            <li>App Store에서 <strong>Expo Go</strong>를 설치하세요.</li>
+            <li>무료 Expo 계정으로 로그인하세요. (아무 계정이나 가능, 별도 권한 불필요)</li>
+            <li>
+              아이폰에서 보고 있다면 아래 버튼을, 컴퓨터라면 오른쪽 QR을
+              <strong>iOS (Expo Go)</strong> 탭으로 전환해 스캔하세요.
+            </li>
+          </ol>
+          <a
+            class="btn secondary"
+            href="exp://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2?runtime-version=exposdk%3A57.0.0&amp;channel-name=preview"
+            >Expo Go로 열기</a
+          >
+        </section>
       </div>
 
-      <p class="req">
-        <strong>Android:</strong> 위 버튼을 눌러 APK를 설치하세요. 설치 시
-        “출처를 알 수 없는 앱” 허용이 필요할 수 있습니다.
-      </p>
-
-      <p class="req">
-        <strong>iOS:</strong> ① App Store에서 <strong>Expo Go</strong>를
-        설치하세요. ② 아이폰에서 이 페이지를 열었다면 위 “iOS로 열기” 버튼을,
-        컴퓨터로 보고 있다면 아래 <strong>iOS QR</strong>을 폰 카메라로
-        스캔하세요. Expo Go는 무료 Expo 계정 로그인이 필요합니다 (아무 계정이나
-        가능, 별도 권한 불필요).
-      </p>
-
-      <div class="qr-wrap">
+      <aside class="card qr-card">
         <div class="qr-tabs" role="tablist">
           <button class="qr-tab active" type="button" data-qr="page">
             설치 페이지
@@ -211,11 +278,13 @@
             iOS (Expo Go)
           </button>
         </div>
-        <img id="qr-img" src="qr.svg" alt="설치 페이지 QR" width="220" height="220" />
-        <p class="hint" id="qr-caption" style="margin-top: 12px">
+        <img id="qr-img" src="qr.svg" alt="설치 페이지 QR" width="240" height="240" />
+        <p class="hint" id="qr-caption">
           이 설치 페이지 열기 (Android는 여기서 APK 설치)
         </p>
-      </div>
+      </aside>
+
+      <p class="note">문제가 있으면 배포자에게 문의해주세요.</p>
 
       <script>
         var QRS = {
