@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BrowserScreen } from './src/screens/BrowserScreen';
 import { LauncherScreen } from './src/screens/LauncherScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
-import { DEFAULT_SETTINGS, Settings } from './src/settings';
+import { Settings } from './src/settings';
+import { loadSettings, saveSettings } from './src/storage';
 
 export default function App() {
   return (
@@ -16,7 +17,19 @@ export default function App() {
 function Root() {
   const [uri, setUri] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  // AsyncStorage에서 복원될 때까지 null (앱 재시작 후에도 설정 유지)
+  const [settings, setSettingsState] = useState<Settings | null>(null);
+
+  useEffect(() => {
+    loadSettings().then(setSettingsState);
+  }, []);
+
+  const setSettings = (s: Settings) => {
+    setSettingsState(s);
+    saveSettings(s);
+  };
+
+  if (!settings) return null; // 복원 중 (수 ms)
 
   if (uri) {
     return (
