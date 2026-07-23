@@ -14,7 +14,7 @@
 - [x] ⚙️ iOS 권한: `mediaCapturePermissionGrantType` grant/prompt 토글
 - [x] ✅ Android: 앱 CAMERA/RECORD_AUDIO 권한 선요청 → 웹뷰 권한 자동 승인
 - [x] ✅ 빌드 타임: Info.plist 문구, Android 매니페스트 권한
-- [ ] ⬜ 측정 중 화면 꺼짐 방지 (`expo-keep-awake`)
+- [x] ✅ 측정 중 화면 꺼짐 방지 (`expo-keep-awake` — 설정 토글 + `screen.keepAwake` 브릿지)
 - [ ] ⬜ 위치 사용 시 Android `geolocationEnabled` + 앱 권한
 
 ## 쿠키 / 세션 / 스토리지
@@ -30,7 +30,7 @@
 - [x] ⚙️ `window.open` / `target=_blank`: 현재 창 / 외부 브라우저 / 차단
 - [x] ✅ `tel:`, `mailto:`, 카카오 등 커스텀 스킴 → `Linking.openURL`
 - [x] ✅ iOS `LSApplicationQueriesSchemes` 등록
-- [ ] ⬜ Android `intent://` URL 파싱 (Linking으로는 안 열림 — PG 결제 필요 시 구현)
+- [x] ✅ Android `intent://` URL 파싱 (`src/intent.ts` — 앱 스킴 → fallback URL → 마켓)
 - [ ] ⬜ 구글 OAuth: 웹뷰 UA 차단(`disallowed_useragent`) → 외부 브라우저/ASWebAuthenticationSession 우회
 
 ## 파일 다운로드 (docs/bridge.md 참고)

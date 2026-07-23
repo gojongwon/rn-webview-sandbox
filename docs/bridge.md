@@ -67,6 +67,15 @@ AppBridge.saveFile('report.xlsx', blob.type, base64);
 const { ok, uri } = await AppBridge.request('download.blob', { name, mime, base64 });
 ```
 
+### `screen.keepAwake` (send 또는 request)
+
+측정 등 장시간 화면을 켜둬야 할 때. 웹뷰를 나가면 자동 해제된다. 브릿지 지정값이 앱 설정보다 우선.
+
+```js
+AppBridge.send('screen.keepAwake', { on: true });  // 측정 시작
+AppBridge.send('screen.keepAwake', { on: false }); // 측정 종료
+```
+
 정의되지 않은 type을 `request`로 보내면 `error` 응답이 온다.
 
 ## 자동 다운로드 처리 (웹 수정 없이 동작)

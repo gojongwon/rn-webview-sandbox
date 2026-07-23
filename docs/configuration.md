@@ -12,6 +12,8 @@ src/
   theme.ts                     # 공용 스타일
   bridge.ts                    # 브릿지 규격 + 주입 스크립트 (docs/bridge.md)
   download.ts                  # 파일 저장/공유 (expo-file-system, expo-sharing)
+  intent.ts                    # Android intent:// URL 파싱·처리
+  storage.ts                   # 설정 영구 저장 (AsyncStorage)
   components.tsx               # SwitchRow, SegmentRow, ErrorView, BridgeLogPanel
   screens/
     LauncherScreen.tsx
@@ -30,7 +32,8 @@ src/
 | 웹뷰 디버깅 | `webviewDebuggingEnabled` | Android `chrome://inspect`, iOS Safari 개발자 메뉴 |
 | 렌더러 크래시 복구 | `onContentProcessDidTerminate`(iOS), `onRenderProcessGone`(Android) → `reload()` | 미처리 시 흰 화면으로 멈춤 |
 | Android 백버튼 | `BackHandler` + `canGoBack ? goBack() : 런처로` | 웹 히스토리 우선, 없으면 웹뷰 종료 |
-| 외부 스킴 | `onShouldStartLoadWithRequest` → `Linking.openURL` | `tel:`, `mailto:`, `kakaotalk:` 등. **한계: Android `intent://`는 Linking으로 안 열림** (필요 시 intent URL 파싱 추가) |
+| 외부 스킴 | `onShouldStartLoadWithRequest` → `Linking.openURL` | `tel:`, `mailto:`, `kakaotalk:` 등 |
+| intent:// 처리 | `src/intent.ts` — 앱 스킴 실행 → `S.browser_fallback_url` → 마켓 이동 | Android PG 결제·앱 전환 |
 | HTTP 에러 배너 | `onHttpError` (메인 문서 URL만 필터) | 탭하면 닫힘 |
 | 로드 실패 화면 | `renderError` + 다시 시도 버튼 | 오프라인/DNS 실패 등 |
 | 플로팅 백 버튼 | 좌상단 반투명 ← | iOS는 백버튼이 없어서 런처 복귀용 |
@@ -38,7 +41,7 @@ src/
 | 파일 다운로드 | blob/data 클릭 인터셉트, 직링크 다운로드, iOS `onFileDownload` | 저장 후 OS 공유 시트. 상세는 docs/bridge.md |
 | 브릿지 로그 | 우하단 "브릿지 N" 버튼 → 로그 패널 | 웹↔앱 메시지 실시간 확인 |
 
-## 2. 설정 페이지 (런처 우측 상단 "설정" 버튼, 세션 단위 — 앱 재시작하면 초기화됨)
+## 2. 설정 페이지 (런처 우측 상단 "설정" 버튼, AsyncStorage에 저장 — 앱 재시작 후에도 유지)
 
 공통 / iOS / Android 세 그룹으로 나뉜다. 플랫폼 전용 설정은 해당 플랫폼에서만 효과가 있고, 반대 플랫폼에서는 무시된다.
 
@@ -50,6 +53,7 @@ src/
 | 커스텀 User-Agent | `applicationNameForUserAgent` | off | UA 끝에 `DeepCheckSandbox/1.0` 부착 → 웹의 앱 감지 로직 테스트 |
 | 하단 Safe Area 앱 처리 | `SafeAreaView` edges에 `bottom` 포함 여부 | off(웹 처리) | 웹의 `viewport-fit=cover` + `env(safe-area-inset-bottom)` 테스트 |
 | 시크릿 모드 | `incognito` | off | 쿠키/스토리지 미보존 상태로 첫 방문 시나리오 재현 |
+| 화면 꺼짐 방지 | `expo-keep-awake` | off | 측정 등 장시간 화면 유지. 웹의 `screen.keepAwake` 브릿지가 우선 |
 
 ### iOS
 
@@ -79,7 +83,11 @@ src/
 | iOS 외부 앱 스킴 조회 | `ios.infoPlist.LSApplicationQueriesSchemes` — 카카오/네이버 등 앱 전환용 |
 | Android 권한 | `android.permissions` — CAMERA, RECORD_AUDIO, MODIFY_AUDIO_SETTINGS |
 | 키보드 리사이즈 | Android `windowSoftInputMode` (Expo 기본 `adjustResize`) |
-| 네이티브 모듈 | `expo-file-system`, `expo-sharing` — 추가/변경 시 재빌드 필요 (EAS Update 불가) |
+| 네이티브 모듈 | `expo-file-system`, `expo-sharing`, `expo-keep-awake`, `@react-native-async-storage/async-storage` — 추가/변경 시 재빌드 필요 (EAS Update 불가) |
+
+## 빌드 방법
+
+Android APK: GitHub Actions의 **build-apk-release** 워크플로우 수동 실행 (EAS `preview` 프로필 → Release에 APK 첨부, `EXPO_TOKEN` 시크릿 필요). `npm ci`를 쓰므로 package-lock.json 변경분까지 커밋할 것. iOS는 `eas build --platform ios --profile preview` 별도 실행. JS만 바뀐 경우엔 `npm run publish:preview`(EAS Update)로 충분.
 
 ## 설정을 늘릴 때
 
