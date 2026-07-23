@@ -7,6 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
+      "bundleIdentifier": "com.deepmedi.rnwebviewsandbox",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "웹뷰 내 카메라 측정 기능 테스트에 사용됩니다.",

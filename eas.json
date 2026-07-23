@@ -10,6 +10,10 @@
     },
     "production": {
       "channel": "production"
+    },
+    "ios-simulator": {
+      "channel": "preview",
+      "ios": { "simulator": true }
     }
   }
 }
