@@ -1,0 +1,38 @@
+# main에 push되면 preview 채널로 OTA update(JS/asset) 발행.
+# fingerprint runtimeVersion 덕에 네이티브가 안 맞는 옛 빌드엔 적용되지 않는다.
+# 네이티브 변경(fingerprint 변화)은 build-apk-release.yml이 담당.
+# 필요 설정: 저장소 Secret EXPO_TOKEN
+name: OTA preview update
+
+on:
+  push:
+    branches: [main]
+
+# 연속 push 시 최신 것만 발행
+concurrency:
+  group: ota-preview
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish OTA update
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: eas update --channel preview --environment preview --message "$COMMIT_MSG" --non-interactive

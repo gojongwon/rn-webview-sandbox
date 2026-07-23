@@ -47,7 +47,7 @@
     },
     "owner": "gojongwon1122",
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "fingerprint"
     },
     "updates": {
       "url": "https://u.expo.dev/4eaf7758-b15c-4e58-bd65-17a94c5476e2"

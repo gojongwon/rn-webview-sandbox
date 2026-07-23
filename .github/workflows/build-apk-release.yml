@@ -5,6 +5,14 @@ name: Build APK and release
 
 on:
   workflow_dispatch:
+  # 네이티브 레이어(fingerprint)에 영향 주는 파일이 main에 push되면 자동 빌드.
+  # JS만 바뀐 변경은 ota-preview.yml의 OTA update가 처리.
+  push:
+    branches: [main]
+    paths:
+      - package.json
+      - package-lock.json
+      - app.json
 
 permissions:
   contents: write
