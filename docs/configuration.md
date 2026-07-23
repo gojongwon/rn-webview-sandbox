@@ -85,9 +85,25 @@ src/
 | 키보드 리사이즈 | Android `windowSoftInputMode` (Expo 기본 `adjustResize`) |
 | 네이티브 모듈 | `expo-file-system`, `expo-sharing`, `expo-keep-awake`, `@react-native-async-storage/async-storage` — 추가/변경 시 재빌드 필요 (EAS Update 불가) |
 
-## 빌드 방법
+## 빌드·배포 방법
 
-Android APK: GitHub Actions의 **build-apk-release** 워크플로우 수동 실행 (EAS `preview` 프로필 → Release에 APK 첨부, `EXPO_TOKEN` 시크릿 필요). `npm ci`를 쓰므로 package-lock.json 변경분까지 커밋할 것. iOS는 `eas build --platform ios --profile preview` 별도 실행. JS만 바뀐 경우엔 `npm run publish:preview`(EAS Update)로 충분.
+**Android APK**: GitHub Actions의 **build-apk-release** 워크플로우 수동 실행 (EAS `preview` 프로필 → Release에 APK 첨부, `EXPO_TOKEN` 시크릿 필요). `npm ci`를 쓰므로 package-lock.json 변경분까지 커밋할 것. JS만 바뀐 경우엔 `npm run publish:preview`(EAS Update)로 충분.
+
+**iOS (Expo Go, 개발자 계정 불필요)**: 로컬 서버 없이 배포 환경에서 검증하는 경로.
+
+1. `npm run publish:preview`로 업데이트 게시
+2. 아이폰 Expo Go에서 아래 QR/링크로 열기 (expo.dev 대시보드의 해당 업데이트 페이지 QR도 동일)
+
+```
+https://qr.expo.dev/eas-update?projectId=4eaf7758-b15c-4e58-bd65-17a94c5476e2&runtimeVersion=exposdk:57.0.0&channel=preview
+```
+
+동작 원리: runtimeVersion 정책이 플랫폼별로 분리되어 있다 — Android는 `fingerprint`(APK 빌드와 정확 매칭), **iOS는 `sdkVersion`**(`exposdk:57.0.0` → Expo Go가 로드 가능). 주의:
+
+- Expo Go는 최신 SDK만 지원하므로 SDK 업그레이드 시 Expo Go도 업데이트 필요
+- 비공개 프로젝트면 Expo Go에 프로젝트 접근 권한이 있는 계정으로 로그인 필요할 수 있음
+- Info.plist 기반 기능(카카오 스킴, 권한 문구)은 Expo Go에서 테스트 불가
+- 나중에 실제 iOS 빌드(TestFlight)를 시작하면 `ios.runtimeVersion`도 `fingerprint`로 되돌리는 게 안전
 
 ## 설정을 늘릴 때
 

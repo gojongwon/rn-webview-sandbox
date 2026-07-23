@@ -9,6 +9,9 @@
     "ios": {
       "bundleIdentifier": "com.deepmedi.rnwebviewsandbox",
       "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      },
       "infoPlist": {
         "NSCameraUsageDescription": "웹뷰 내 카메라 측정 기능 테스트에 사용됩니다.",
         "NSMicrophoneUsageDescription": "웹뷰 내 마이크 기능 테스트에 사용됩니다.",
