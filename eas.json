@@ -11,6 +11,11 @@
     "production": {
       "channel": "production"
     },
+    "ios-testflight": {
+      "channel": "preview",
+      "distribution": "store",
+      "autoIncrement": true
+    },
     "ios-simulator": {
       "channel": "preview",
       "ios": { "simulator": true }

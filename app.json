@@ -13,6 +13,7 @@
         "policy": "sdkVersion"
       },
       "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "웹뷰 내 카메라 측정 기능 테스트에 사용됩니다.",
         "NSMicrophoneUsageDescription": "웹뷰 내 마이크 기능 테스트에 사용됩니다.",
         "NSPhotoLibraryUsageDescription": "웹뷰 내 파일(이미지) 업로드 테스트에 사용됩니다.",
